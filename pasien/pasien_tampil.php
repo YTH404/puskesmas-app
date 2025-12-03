@@ -1,0 +1,59 @@
+<?php
+include '../config/koneksi.php';
+
+$page_title = "Data Pasien - Puskesmas Management System";
+$css_path = "../assets/css/style.css";
+$js_path = "../assets/js/script.js";
+
+// Query untuk mengambil data
+$sql = "SELECT * FROM pasien";
+$result = mysqli_query($conn, $sql);
+?>
+
+<?php include '../templates/header.php'; ?>
+
+<div class="page-header">
+    <h1 class="page-title">👥 Data Pasien</h1>
+    <a href="pasien_tambah.php" class="btn btn-success" style="float: right; margin-top: -2.5rem;">+ Tambah Pasien</a>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>Nama Ibu</th>
+                <th>Jenis Kelamin</th>
+                <th>Golongan Darah</th>
+                <th>Tanggal Lahir</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (mysqli_num_rows($result) > 0) {
+                $no = 1;
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($row['id_pasien']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nama_pasien']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nama_ibu']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['jenis_kelamin']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['golongan_darah']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['tgl_lahir']) . "</td>";
+                    echo "<td class='action-links'>
+                            <a href='pasien_edit.php?id_pasien=" . $row['id_pasien'] . "' class='edit'>Edit</a>
+                            <a href='pasien_hapus.php?id_pasien=" . $row['id_pasien'] . "' class='delete' onclick=\"return confirmDelete('Yakin ingin menghapus data ini?')\">Hapus</a>
+                          </td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='7' class='text-center'>Data belum ada</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
+
+<?php include '../templates/footer.php'; ?>
