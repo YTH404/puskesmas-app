@@ -30,52 +30,67 @@ if ($depth <= 1) {
         </div>
         
         <nav class="sidebar-nav">
-            <a href="<?php echo $base_path; ?>index.php" class="nav-item" data-nav="dashboard">
-                <span class="nav-icon">📊</span>
-                <span class="nav-text">Dashboard</span>
-            </a>
-            <div class="nav-section">
-                <div class="nav-section-title">Data Utama</div>
-                <a href="<?php echo $base_path; ?>pasien/pasien_tampil.php" class="nav-item" data-nav="pasien">
-                    <span class="nav-icon">👥</span>
-                    <span class="nav-text">Pasien</span>
-                </a>
-                <a href="<?php echo $base_path; ?>dokter/dokter_tampil.php" class="nav-item" data-nav="dokter">
-                    <span class="nav-icon">👨‍⚕️</span>
-                    <span class="nav-text">Dokter</span>
-                </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Layanan</div>
-                <a href="<?php echo $base_path; ?>pendaftaran/pendaftaran_tampil.php" class="nav-item" data-nav="pendaftaran">
-                    <span class="nav-icon">📋</span>
-                    <span class="nav-text">Pendaftaran</span>
-                </a>
-                <a href="<?php echo $base_path; ?>pemeriksaan/pemeriksaan_tampil.php" class="nav-item" data-nav="pemeriksaan">
-                    <span class="nav-icon">🩺</span>
-                    <span class="nav-text">Pemeriksaan</span>
-                </a>
-                <a href="<?php echo $base_path; ?>histori/histori_tampil.php" class="nav-item" data-nav="histori">
-                    <span class="nav-icon">📜</span>
-                    <span class="nav-text">Histori</span>
-                </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Sistem</div>
-                <a href="<?php echo $base_path; ?>admin/admin_tampil.php" class="nav-item" data-nav="admin">
-                    <span class="nav-icon">⚙️</span>
-                    <span class="nav-text">Admin</span>
-                </a>
-            </div>
-
-            <div class="nav-section" style="margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 1rem;">
-                <a href="<?php echo $base_path; ?>logout.php" class="nav-item logout-item" data-nav="logout">
-                    <span class="nav-icon">🚪</span>
-                    <span class="nav-text">Logout</span>
-                </a>
-            </div>
+            <ul class="navbar">
+                <li class="sidebar-header">Menu Utama</li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'index.php') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>index.php" data-nav="dashboard">
+                        <i class="icon">📊</i>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="sidebar-header">Data Master</li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pasien') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pasien/pasien_tampil.php" data-nav="pasien">
+                        <i class="icon">👥</i>
+                        <span class="sidebar-text">Data Pasien</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dokter') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>dokter/dokter_tampil.php" data-nav="dokter">
+                        <i class="icon">👨‍⚕️</i>
+                        <span class="sidebar-text">Data Dokter</span>
+                    </a>
+                </li>
+                
+                <li class="sidebar-header">Layanan</li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pendaftaran') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pendaftaran/pendaftaran_tampil.php" data-nav="pendaftaran">
+                        <i class="icon">📋</i>
+                        <span class="sidebar-text">Pendaftaran</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pemeriksaan') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pemeriksaan/pemeriksaan_tampil.php" data-nav="pemeriksaan">
+                        <i class="icon">🩺</i>
+                        <span class="sidebar-text">Pemeriksaan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'histori') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>histori/histori_tampil.php" data-nav="histori">
+                        <i class="icon">📜</i>
+                        <span class="sidebar-text">Histori Pemeriksaan</span>
+                    </a>
+                </li>
+                
+                <li class="sidebar-header">Sistem</li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'admin') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>admin/admin_tampil.php" data-nav="admin">
+                        <i class="icon">⚙️</i>
+                        <span class="sidebar-text">Kelola Admin</span>
+                    </a>
+                </li>
+                
+                <li class="sidebar-header">Akun</li>
+                <li class="sidebar-item">
+                    <form action="<?php echo $base_path; ?>logout.php" method="POST" class="logout-form">
+                        <button type="submit" class="sidebar-link logout-item" id="logout">
+                            <i class="icon">🚪</i>
+                            <span class="sidebar-text">Logout</span>
+                        </button>
+                    </form>
+                </li>
+            </ul>
         </nav>
     </aside>
 

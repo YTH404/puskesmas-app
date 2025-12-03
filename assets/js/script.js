@@ -3,7 +3,7 @@ function initializeSidebar() {
     const menuToggle = document.getElementById('menuToggle');
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.querySelector('.sidebar');
-    const navItems = document.querySelectorAll('.nav-item');
+    const navLinks = document.querySelectorAll('.sidebar-link');
 
     if (menuToggle && sidebar) {
         menuToggle.addEventListener('click', function() {
@@ -17,9 +17,9 @@ function initializeSidebar() {
         });
     }
 
-    // Close sidebar when a nav item is clicked
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
+    // Close sidebar when a nav link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
                 sidebar.classList.remove('active');
             }
@@ -48,19 +48,19 @@ function initializeSidebar() {
         activeNav = 'dashboard';
     }
     
-    // Apply active class to matching nav item
-    navItems.forEach(item => {
-        const navAttr = item.getAttribute('data-nav');
-        const isLogout = item.classList.contains('logout-item');
+    // Apply active class to matching nav link
+    navLinks.forEach(link => {
+        const navAttr = link.getAttribute('data-nav');
+        const isLogout = link.classList.contains('logout-item');
         
         // Remove active from all non-logout items
         if (!isLogout) {
-            item.classList.remove('active');
+            link.classList.remove('active');
         }
         
         // Add active to matching item
         if (navAttr === activeNav && !isLogout) {
-            item.classList.add('active');
+            link.classList.add('active');
         }
     });
 }
