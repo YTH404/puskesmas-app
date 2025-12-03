@@ -1,3 +1,77 @@
+// ===== SIDEBAR TOGGLE =====
+function initializeSidebar() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.querySelector('.sidebar');
+    const navItems = document.querySelectorAll('.nav-item');
+
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+        });
+    }
+
+    if (sidebarToggle && sidebar) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+        });
+    }
+
+    // Close sidebar when a nav item is clicked
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+    });
+
+    // Highlight current page in sidebar based on pathname
+    const currentPath = window.location.pathname;
+    
+    // Determine which section should be active
+    let activeNav = null;
+    
+    if (currentPath.includes('/pasien/')) {
+        activeNav = 'pasien';
+    } else if (currentPath.includes('/dokter/')) {
+        activeNav = 'dokter';
+    } else if (currentPath.includes('/pendaftaran/')) {
+        activeNav = 'pendaftaran';
+    } else if (currentPath.includes('/pemeriksaan/')) {
+        activeNav = 'pemeriksaan';
+    } else if (currentPath.includes('/histori/')) {
+        activeNav = 'histori';
+    } else if (currentPath.includes('/admin/')) {
+        activeNav = 'admin';
+    } else if (currentPath.includes('index.php') || currentPath.endsWith('/puskesmas-app/')) {
+        activeNav = 'dashboard';
+    }
+    
+    // Apply active class to matching nav item
+    navItems.forEach(item => {
+        const navAttr = item.getAttribute('data-nav');
+        const isLogout = item.classList.contains('logout-item');
+        
+        // Remove active from all non-logout items
+        if (!isLogout) {
+            item.classList.remove('active');
+        }
+        
+        // Add active to matching item
+        if (navAttr === activeNav && !isLogout) {
+            item.classList.add('active');
+        }
+    });
+}
+
+// Initialize sidebar immediately
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSidebar);
+} else {
+    initializeSidebar();
+}
+
 // ===== FORM VALIDATION =====
 function validateForm(formId) {
     const form = document.getElementById(formId);

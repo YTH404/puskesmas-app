@@ -2,8 +2,7 @@
 include '../config/koneksi.php';
 
 $page_title = "Data Pendaftaran - Puskesmas Management System";
-$css_path = "../assets/css/style.css";
-$js_path = "../assets/js/script.js";
+$base_path = '../';
 
 // Query untuk mengambil data
 $sql = "SELECT pendaftaran.*, pasien.nama_pasien 
@@ -13,11 +12,11 @@ $sql = "SELECT pendaftaran.*, pasien.nama_pasien
 $result = mysqli_query($conn, $sql);
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
 
-<div class="page-header">
-    <h1 class="page-title">📝 Data Pendaftaran</h1>
-    <a href="pendaftaran_tambah.php" class="btn btn-success" style="float: right; margin-top: -2.5rem;">+ Pendaftaran Baru</a>
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="pendaftaran_tambah.php" class="btn btn-success">+ Pendaftaran Baru</a>
 </div>
 
 <div class="table-container">

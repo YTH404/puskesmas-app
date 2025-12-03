@@ -2,8 +2,7 @@
 include '../config/koneksi.php';
 
 $page_title = "Edit Data Pasien - Puskesmas Management System";
-$css_path = "../assets/css/style.css";
-$js_path = "../assets/js/script.js";
+$base_path = '../';
 
 // Jika form disubmit → proses update
 if (isset($_POST['submit'])) {
@@ -40,11 +39,8 @@ $result = mysqli_query($conn, $sql);
 $data = mysqli_fetch_assoc($result);
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
-
-<div class="page-header">
-    <h1 class="page-title">✏️ Edit Data Pasien</h1>
-</div>
 
 <div class="form-container">
     <form action="" method="POST" id="editForm">

@@ -2,8 +2,7 @@
 include '../config/koneksi.php';
 
 $page_title = "Data Admin - Puskesmas Management System";
-$css_path = "../assets/css/style.css";
-$js_path = "../assets/js/script.js";
+$base_path = '../';
 
 // Query untuk mengambil data
 $sql = "SELECT * FROM admin
@@ -11,11 +10,11 @@ $sql = "SELECT * FROM admin
 $result = mysqli_query($conn, $sql);
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
 
-<div class="page-header">
-    <h1 class="page-title">📋 Data Admin</h1>
-    <a href="admin_tambah.php" class="btn btn-success" style="float: right; margin-top: -2.5rem;">+ Tambah Admin</a>
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="admin_tambah.php" class="btn btn-success">+ Tambah Admin</a>
 </div>
 
 <div class="table-container">

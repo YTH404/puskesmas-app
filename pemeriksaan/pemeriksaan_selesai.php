@@ -1,11 +1,14 @@
 <?php
 include '../config/koneksi.php';
 
+$page_title = "Pemeriksaan Selesai - Puskesmas Management System";
+$base_path = '../';
+
 // Jika form disubmit → proses update
 if (isset($_POST['submit'])) {
-    $id      = $_POST['id_pemeriksaan'];
-    $waktu     = $_POST['waktu_periksa'];
-    $obat     = $_POST['obat'];
+    $id = htmlspecialchars($_POST['id_pemeriksaan']);
+    $waktu = htmlspecialchars($_POST['waktu_periksa']);
+    $obat = htmlspecialchars($_POST['obat']);
 
     $sql1 = "UPDATE pemeriksaan SET 
                 waktu_periksa='$waktu',
@@ -30,38 +33,60 @@ if (isset($_POST['submit'])) {
 }
 
 // Jika belum submit → tampilkan form edit
-$id = $_GET['id_pemeriksaan'];
+$id = htmlspecialchars($_GET['id_pemeriksaan']);
 $sql = "SELECT pemeriksaan.*, pasien.nama_pasien, pendaftaran.keluhan, dokter.nama_dokter
 FROM pemeriksaan
 JOIN pendaftaran ON pemeriksaan.id_pendaftaran = pendaftaran.id_pendaftaran
 JOIN pasien ON pendaftaran.id_pasien = pasien.id_pasien
-JOIN dokter ON pemeriksaan.id_dokter = dokter.id_dokter
+LEFT JOIN dokter ON pemeriksaan.id_dokter = dokter.id_dokter
 WHERE id_pemeriksaan = $id";
 $result = mysqli_query($conn, $sql);
 $data = mysqli_fetch_assoc($result);
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Pemeriksaan Selesai</title>
-</head>
-<body>
-    <h2 align="center">Pemeriksaan Selesai</h2>
+<?php include '../templates/sidebar.php'; ?>
+<?php include '../templates/header.php'; ?>
 
-    <form action="" method="POST">
-        <input type="hidden" name="id_pemeriksaan" value="<?php echo $data['id_pemeriksaan']; ?>">
-        Nama Pasien:
-        <input type="text" value="<?php echo $data['nama_pasien'];?>" readonly><br><br>
-        Keluhan:
-        <input type="text" value="<?php echo $data['keluhan'];?>" readonly><br><br>
-        Dokter:
-        <input type="text" value="<?php echo $data['nama_dokter'];?>" readonly><br><br>
-        Waktu Periksa:
-        <input type="datetime-local" name="waktu_periksa" value="<?php echo $data['waktu_periksa']; ?>" readonly><br><br>
-        Obat:
-        <input type="text" name="obat" value="<?php echo $data['obat']; ?>" required><br><br>
-        <input type="submit" name="submit" value="Selesai">
+<div class="form-container">
+    <div class="page-header">
+        <h1 class="page-title">Pemeriksaan Selesai</h1>
+    </div>
+
+    <form action="" method="POST" id="formSelesai">
+        <input type="hidden" name="id_pemeriksaan" value="<?php echo htmlspecialchars($data['id_pemeriksaan']); ?>">
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="nama_pasien">Nama Pasien</label>
+                <input type="text" id="nama_pasien" value="<?php echo htmlspecialchars($data['nama_pasien']); ?>" readonly class="form-control" style="background-color: #f0f0f0; cursor: not-allowed;">
+            </div>
+            <div class="form-group">
+                <label for="nama_dokter">Dokter</label>
+                <input type="text" id="nama_dokter" value="<?php echo htmlspecialchars($data['nama_dokter'] ?? '-'); ?>" readonly class="form-control" style="background-color: #f0f0f0; cursor: not-allowed;">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="keluhan">Keluhan</label>
+            <textarea id="keluhan" readonly class="form-control" rows="3" style="background-color: #f0f0f0; cursor: not-allowed;"><?php echo htmlspecialchars($data['keluhan']); ?></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="waktu_periksa">Waktu Periksa</label>
+                <input type="datetime-local" id="waktu_periksa" value="<?php echo htmlspecialchars($data['waktu_periksa']); ?>" readonly class="form-control" style="background-color: #f0f0f0; cursor: not-allowed;">
+            </div>
+            <div class="form-group">
+                <label for="obat">Obat <span style="color: #dc3545;">*</span></label>
+                <input type="text" name="obat" id="obat" value="<?php echo htmlspecialchars($data['obat']); ?>" required class="form-control" placeholder="Masukkan nama obat...">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" name="submit" class="btn btn-primary">Selesaikan Pemeriksaan</button>
+            <a href="pemeriksaan_tampil.php" class="btn btn-secondary">Batal</a>
+        </div>
     </form>
-</body>
-</html>
+</div>
+
+<?php include '../templates/footer.php'; ?>

@@ -2,8 +2,7 @@
 include '../config/koneksi.php';
 
 $page_title = "Data Pemeriksaan - Puskesmas Management System";
-$css_path = "../assets/css/style.css";
-$js_path = "../assets/js/script.js";
+$base_path = '../';
 
 // Query untuk mengambil data
 $sql = "SELECT pemeriksaan.*, pasien.nama_pasien, pendaftaran.keluhan, pendaftaran.status, dokter.nama_dokter
@@ -15,11 +14,11 @@ $sql = "SELECT pemeriksaan.*, pasien.nama_pasien, pendaftaran.keluhan, pendaftar
 $result = mysqli_query($conn, $sql);
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
 
-<div class="page-header">
-    <h1 class="page-title">🩺 Data Pemeriksaan</h1>
-    <a href="pemeriksaan_tambah.php" class="btn btn-success" style="float: right; margin-top: -2.5rem;">+ Tambah Pemeriksaan</a>
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="pemeriksaan_tambah.php" class="btn btn-success">+ Tambah Pemeriksaan</a>
 </div>
 
 <div class="table-container">

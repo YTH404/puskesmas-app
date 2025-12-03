@@ -2,19 +2,18 @@
 include '../config/koneksi.php';
 
 $page_title = "Data Pasien - Puskesmas Management System";
-$css_path = "../assets/css/style.css";
-$js_path = "../assets/js/script.js";
+$base_path = '../';
 
 // Query untuk mengambil data
 $sql = "SELECT * FROM pasien";
 $result = mysqli_query($conn, $sql);
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
 
-<div class="page-header">
-    <h1 class="page-title">👥 Data Pasien</h1>
-    <a href="pasien_tambah.php" class="btn btn-success" style="float: right; margin-top: -2.5rem;">+ Tambah Pasien</a>
+<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <a href="pasien_tambah.php" class="btn btn-success">+ Tambah Pasien</a>
 </div>
 
 <div class="table-container">

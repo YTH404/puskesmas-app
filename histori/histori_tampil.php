@@ -2,8 +2,7 @@
 include '../config/koneksi.php';
 
 $page_title = "Histori Pemeriksaan - Puskesmas Management System";
-$css_path = "../assets/css/style.css";
-$js_path = "../assets/js/script.js";
+$base_path = '../';
 
 // Query untuk mengambil data histori (hanya yang status = 'Selesai')
 $sql = "SELECT pemeriksaan.*, pasien.nama_pasien, pendaftaran.keluhan, pendaftaran.status, dokter.nama_dokter
@@ -20,11 +19,8 @@ if (!$result) {
 }
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
-
-<div class="page-header">
-    <h1 class="page-title">📋 Histori Pemeriksaan</h1>
-</div>
 
 <div class="table-container">
     <table>

@@ -2,8 +2,7 @@
 include 'config/koneksi.php';
 
 $page_title = "Dashboard - Puskesmas Management System";
-$css_path = "assets/css/style.css";
-$js_path = "assets/js/script.js";
+$base_path = '';
 
 // Get statistics
 $totalPasien = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM pasien"))['count'];
@@ -25,12 +24,8 @@ $recentPemeriksaan = mysqli_query($conn, "SELECT pm.id_pemeriksaan, pa.nama_pasi
                                           ORDER BY pm.id_pemeriksaan DESC LIMIT 5");
 ?>
 
+<?php include 'templates/sidebar.php'; ?>
 <?php include 'templates/header.php'; ?>
-
-<div class="page-header">
-    <h1 class="page-title">📊 Dashboard</h1>
-    <p class="text-muted">Selamat datang di Sistem Manajemen Puskesmas</p>
-</div>
 
 <!-- Statistics Grid -->
 <div class="dashboard-grid">

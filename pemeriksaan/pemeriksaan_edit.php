@@ -1,6 +1,9 @@
 <?php
 include '../config/koneksi.php';
 
+$page_title = "Edit Data Pemeriksaan - Puskesmas Management System";
+$base_path = '../';
+
 // Jika form disubmit → proses update
 if (isset($_POST['submit'])) {
     $id      = $_POST['id_pemeriksaan'];
@@ -19,7 +22,7 @@ if (isset($_POST['submit'])) {
               </script>";
         exit;
     } else {
-        echo "Error: " . mysqli_error($conn);
+        echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
     }
 }
 
@@ -34,35 +37,48 @@ $result = mysqli_query($conn, $sql);
 $data = mysqli_fetch_assoc($result);
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Data Pemeriksaan</title>
-</head>
-<body>
-    <h2 align="center">✏️ Edit Data Pemeriksaan</h2>
+<?php include '../templates/sidebar.php'; ?>
+<?php include '../templates/header.php'; ?>
 
-    <form action="" method="POST">
-        <input type="hidden" name="id_pemeriksaan" value="<?php echo $data['id_pemeriksaan']; ?>">
-        Nama Pasien:
-        <input type="text" value="<?php echo $data['nama_pasien'];?>" readonly><br><br>
-        Keluhan:
-        <input type="text" value="<?php echo $data['keluhan'];?>" readonly><br><br>
-        Dokter:
-        <select name="id_dokter" required>
-            <option value="">-- Pilih Dokter --</option>
-            <?php
-            $dokter_sql = "SELECT id_dokter, nama_dokter FROM dokter ORDER BY nama_dokter ASC";
-            $dokter_result = mysqli_query($conn, $dokter_sql);
-            while ($dokter = mysqli_fetch_assoc($dokter_result)) { ?>
-                <option value="<?php echo $dokter['id_dokter']; ?>">
-                    <?php echo $dokter['nama_dokter']; ?>
-                </option>
-            <?php } ?>
-        </select><br><br>
-        Waktu Periksa:
-        <input type="datetime-local" name="waktu_periksa" value="<?php echo $data['waktu_periksa']; ?>" required><br><br>
-        <input type="submit" name="submit" value="Update Data">
+<div class="form-container">
+    <form action="" method="POST" id="editForm">
+        <input type="hidden" name="id_pemeriksaan" value="<?php echo htmlspecialchars($data['id_pemeriksaan']); ?>">
+        
+        <div class="form-group">
+            <label for="nama_pasien">Nama Pasien</label>
+            <input type="text" id="nama_pasien" value="<?php echo htmlspecialchars($data['nama_pasien']); ?>" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="keluhan">Keluhan</label>
+            <input type="text" id="keluhan" value="<?php echo htmlspecialchars($data['keluhan']); ?>" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_dokter">Dokter</label>
+            <select id="id_dokter" name="id_dokter" required>
+                <option value="">-- Pilih Dokter --</option>
+                <?php
+                $dokter_sql = "SELECT id_dokter, nama_dokter FROM dokter ORDER BY nama_dokter ASC";
+                $dokter_result = mysqli_query($conn, $dokter_sql);
+                while ($dokter = mysqli_fetch_assoc($dokter_result)) { ?>
+                    <option value="<?php echo htmlspecialchars($dokter['id_dokter']); ?>">
+                        <?php echo htmlspecialchars($dokter['nama_dokter']); ?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="waktu_periksa">Waktu Periksa</label>
+            <input type="datetime-local" id="waktu_periksa" name="waktu_periksa" value="<?php echo htmlspecialchars($data['waktu_periksa']); ?>" required>
+        </div>
+        
+        <div class="btn-group" style="margin-top: 2rem;">
+            <input type="submit" name="submit" value="Update Data" class="btn btn-primary">
+            <a href="pemeriksaan_tampil.php" class="btn btn-secondary">Batal</a>
+        </div>
     </form>
-</body>
-</html>
+</div>
+
+<?php include '../templates/footer.php'; ?>

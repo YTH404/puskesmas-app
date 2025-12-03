@@ -1,27 +1,18 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Puskesmas App'; ?></title>
-    <link rel="stylesheet" href="<?php echo isset($css_path) ? htmlspecialchars($css_path) : '../../assets/css/style.css'; ?>">
-</head>
-<body>
-    <nav>
-        <div class="navbar-container">
-            <div class="navbar-brand">
-                <span>🏥</span>
-                <span>Puskesmas Management System</span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="../../index.php">Dashboard</a></li>
-                <li><a href="../../pendaftaran/pendaftaran_tampil.php">Pendaftaran</a></li>
-                <li><a href="../../pemeriksaan/pemeriksaan_tampil.php">Pemeriksaan</a></li>
-                <li><a href="../../histori/histori_tampil.php">Histori</a></li>
-                <li><a href="../../pasien/pasien_tampil.php">Pasien</a></li>
-                <li><a href="../../dokter/dokter_tampil.php">Dokter</a></li>
-                <li><a href="../../admin/admin_tampil.php">Admin</a></li>
-            </ul>
+<!-- Page Header -->
+<div class="page-header">
+    <?php if (isset($page_title)): ?>
+        <h1 class="page-title"><?php echo htmlspecialchars($page_title); ?></h1>
+    <?php endif; ?>
+    <?php if (isset($breadcrumb) && is_array($breadcrumb)): ?>
+        <div class="breadcrumb">
+            <?php foreach ($breadcrumb as $index => $item): ?>
+                <?php if ($index > 0): ?>
+                    <span class="breadcrumb-separator">/</span>
+                <?php endif; ?>
+                <a href="<?php echo htmlspecialchars($item['url']); ?>" class="breadcrumb-item">
+                    <?php echo htmlspecialchars($item['label']); ?>
+                </a>
+            <?php endforeach; ?>
         </div>
-    </nav>
-    <div class="container">
+    <?php endif; ?>
+</div>

@@ -1,5 +1,8 @@
 <?php
-include '../config/koneksi.php'; // koneksi database
+include '../config/koneksi.php';
+
+$page_title = "Tambah Data Pemeriksaan - Puskesmas Management System";
+$base_path = '../';
 
 $id =  $_GET['id_pendaftaran'];
 
@@ -30,42 +33,55 @@ if (isset($_POST['submit'])) {
         </script>";
         exit;
     } else {
-        echo "Error: " . mysqli_error($conn);
+        echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
     }
 }
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
+<?php include '../templates/header.php'; ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tambah Data Pemeriksaan</title>
-</head>
-<body>
-    <h2 align="center">📝 Tambah Data Pemeriksaan</h2>
-
-    <form action="" method="POST">
-        <input type="hidden" name="id_pendaftaran" value="<?php echo $data['id_pendaftaran']; ?>">
-        Nama Pasien:
-        <input type="text" value="<?php echo $data['nama_pasien']; ?>" readonly><br><br>
-        Keluhan:
-        <input type="text" name="keluhan" value="<?php echo $data['keluhan']; ?>" readonly><br><br>
-        Dokter:
-        <select name="id_dokter" required>
-            <option value="">-- Pilih Dokter --</option>
-            <?php
-            $dokter_sql = "SELECT id_dokter, nama_dokter FROM dokter ORDER BY nama_dokter ASC";
-            $dokter_result = mysqli_query($conn, $dokter_sql);
-            while ($dokter = mysqli_fetch_assoc($dokter_result)) { ?>
-                <option value="<?php echo $dokter['id_dokter']; ?>">
-                    <?php echo $dokter['nama_dokter']; ?>
-                </option>
-            <?php } ?>
-        </select><br><br>
-        Waktu Periksa:
-        <input type="datetime-local" name="waktu_periksa" required><br><br>
+<div class="form-container">
+    <form action="" method="POST" id="addForm">
+        <input type="hidden" name="id_pendaftaran" value="<?php echo htmlspecialchars($data['id_pendaftaran']); ?>">
+        
+        <div class="form-group">
+            <label for="nama_pasien">Nama Pasien</label>
+            <input type="text" id="nama_pasien" value="<?php echo htmlspecialchars($data['nama_pasien']); ?>" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="keluhan">Keluhan</label>
+            <input type="text" id="keluhan" name="keluhan" value="<?php echo htmlspecialchars($data['keluhan']); ?>" readonly>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_dokter">Dokter</label>
+            <select id="id_dokter" name="id_dokter" required>
+                <option value="">-- Pilih Dokter --</option>
+                <?php
+                $dokter_sql = "SELECT id_dokter, nama_dokter FROM dokter ORDER BY nama_dokter ASC";
+                $dokter_result = mysqli_query($conn, $dokter_sql);
+                while ($dokter = mysqli_fetch_assoc($dokter_result)) { ?>
+                    <option value="<?php echo htmlspecialchars($dokter['id_dokter']); ?>">
+                        <?php echo htmlspecialchars($dokter['nama_dokter']); ?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="waktu_periksa">Waktu Periksa</label>
+            <input type="datetime-local" id="waktu_periksa" name="waktu_periksa" required>
+        </div>
+        
         <input type="hidden" name="obat">
-        <input type="submit" name="submit" value="Simpan">
+        
+        <div class="btn-group" style="margin-top: 2rem;">
+            <input type="submit" name="submit" value="Simpan" class="btn btn-success">
+            <a href="pemeriksaan_tampil.php" class="btn btn-secondary">Batal</a>
+        </div>
     </form>
-</body>
-</html>
+</div>
+
+<?php include '../templates/footer.php'; ?>

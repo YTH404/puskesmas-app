@@ -1,9 +1,8 @@
 <?php
-include '../config/koneksi.php'; // koneksi database
+include '../config/koneksi.php';
 
 $page_title = "Tambah Data Dokter - Puskesmas Management System";
-$css_path = "../assets/css/style.css";
-$js_path = "../assets/js/script.js";
+$base_path = '../';
 
 // Jika tombol submit ditekan
 if (isset($_POST['submit'])) {
@@ -29,11 +28,8 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
+<?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
-
-<div class="page-header">
-    <h1 class="page-title">📝 Tambah Data Dokter</h1>
-</div>
 
 <div class="form-container">
     <form action="" method="POST" id="addForm">
