@@ -16,9 +16,8 @@ if (isset($_POST['login'])) {
     $data = mysqli_fetch_assoc($result);
 
     if ($data) {
-        $_SESSION['id_admin'] = $data['id_admin'];
-        $_SESSION['nama_admin'] = $data['nama_admin'];
         $_SESSION['login'] = true;
+        $_SESSION['level'] = $data['level'];
         $success = 'Login berhasil! Mengalihkan...';
         echo "<script>
                 setTimeout(function() {
@@ -26,7 +25,7 @@ if (isset($_POST['login'])) {
                 }, 1500);
               </script>";
     } else {
-        $error = 'nama_admin atau password salah!';
+        $error = 'Nama Admin atau Password salah!';
     }
 }
 
@@ -68,12 +67,12 @@ if (isset($_SESSION['login'])) {
         <form method="POST" action="" class="login-form">
             <div class="form-group">
                 <label for="nama_admin">nama_admin</label>
-                <input type="text" id="nama_admin" name="nama_admin" placeholder="Masukkan nama_admin..." required autofocus>
+                <input type="text" id="nama_admin" name="nama_admin" placeholder="Masukkan Nama Admin" required autofocus>
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Masukkan password..." required>
+                <input type="password" id="password" name="password" placeholder="Masukkan Password" required>
             </div>
 
             <button type="submit" name="login">Login</button>

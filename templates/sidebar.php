@@ -1,4 +1,5 @@
 <?php
+
 // Calculate base path for flexible navigation
 $current_file = $_SERVER['PHP_SELF'];
 $parts = explode('/', trim($current_file, '/'));

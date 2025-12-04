@@ -17,10 +17,6 @@ $result = mysqli_query($conn, $sql);
 <?php include '../templates/sidebar.php'; ?>
 <?php include '../templates/header.php'; ?>
 
-<div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-    <a href="pemeriksaan_tambah.php" class="btn btn-success">+ Tambah Pemeriksaan</a>
-</div>
-
 <div class="table-container">
     <table>
         <thead>

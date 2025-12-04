@@ -60,11 +60,12 @@ if (isset($_POST['submit'])) {
             <select id="id_dokter" name="id_dokter" required>
                 <option value="">-- Pilih Dokter --</option>
                 <?php
-                $dokter_sql = "SELECT id_dokter, nama_dokter FROM dokter ORDER BY nama_dokter ASC";
+                $dokter_sql = "SELECT id_dokter, nama_dokter, start_time_dokter, end_time_dokter
+                               FROM dokter ORDER BY nama_dokter ASC";
                 $dokter_result = mysqli_query($conn, $dokter_sql);
                 while ($dokter = mysqli_fetch_assoc($dokter_result)) { ?>
                     <option value="<?php echo htmlspecialchars($dokter['id_dokter']); ?>">
-                        <?php echo htmlspecialchars($dokter['nama_dokter']); ?>
+                        <?php echo htmlspecialchars($dokter['nama_dokter'] . " (" . date('H.i', strtotime($dokter['start_time_dokter'])) . " - " . date('H.i', strtotime($dokter['end_time_dokter'])) . ")"); ?>
                     </option>
                 <?php } ?>
             </select>

@@ -1,5 +1,7 @@
 <?php
 include 'config/koneksi.php';
+include 'auth.php';
+checkRole(["admin", "pendaftaran", "pemeriksaan", "apoteker"]);
 
 $page_title = "Dashboard - Puskesmas Management System";
 $base_path = '';
@@ -7,8 +9,8 @@ $base_path = '';
 // Get statistics
 $totalPasien = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM pasien"))['count'];
 $totalDokter = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM dokter"))['count'];
-$totalPendaftaran = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM pendaftaran"))['count'];
-$totalPemeriksaan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM pemeriksaan"))['count'];
+$totalPendaftaran = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM pendaftaran WHERE status IN ('Menunggu', 'Diperiksa')"))['count'];
+$totalPemeriksaan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count FROM pendaftaran WHERE status IN ('Diperiksa')"))['count'];
 
 // Get recent data
 $recentPendaftaran = mysqli_query($conn, "SELECT p.id_pendaftaran, p.keluhan, pa.nama_pasien, p.status 
@@ -17,11 +19,12 @@ $recentPendaftaran = mysqli_query($conn, "SELECT p.id_pendaftaran, p.keluhan, pa
                                           WHERE p.status IN ('Menunggu', 'Diperiksa') 
                                           ORDER BY p.id_pendaftaran DESC LIMIT 5");
 
-$recentPemeriksaan = mysqli_query($conn, "SELECT pm.id_pemeriksaan, pa.nama_pasien, d.nama_dokter, pm.waktu_periksa 
+$recentPemeriksaan = mysqli_query($conn, "SELECT pm.id_pemeriksaan, p.status, pa.nama_pasien, d.nama_dokter, pm.waktu_periksa 
                                           FROM pemeriksaan pm 
                                           JOIN pendaftaran p ON pm.id_pendaftaran = p.id_pendaftaran
                                           JOIN pasien pa ON p.id_pasien = pa.id_pasien
                                           LEFT JOIN dokter d ON pm.id_dokter = d.id_dokter
+                                          WHERE p.status IN ('Diperiksa')
                                           ORDER BY pm.id_pemeriksaan DESC LIMIT 5");
 ?>
 
