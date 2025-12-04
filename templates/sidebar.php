@@ -16,7 +16,8 @@ if ($depth <= 1) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Puskesmas App'; ?></title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css">
+    <?php $css_path = __DIR__ . '/../assets/css/style.css'; ?>
+    <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css?v=<?php echo file_exists($css_path) ? filemtime($css_path) : time(); ?>">
 </head>
 <body>
     <!-- Sidebar -->
@@ -92,6 +93,9 @@ if ($depth <= 1) {
                 </li>
             </ul>
         </nav>
+            <div class="sidebar-footer">
+                <span>&copy; <?php echo date('Y'); ?> Puskesmas Management System</span>
+            </div>
     </aside>
 
     <!-- Main Content -->

@@ -13,7 +13,8 @@ $totalPemeriksaan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c
 // Get recent data
 $recentPendaftaran = mysqli_query($conn, "SELECT p.id_pendaftaran, p.keluhan, pa.nama_pasien, p.status 
                                           FROM pendaftaran p 
-                                          JOIN pasien pa ON p.id_pasien = pa.id_pasien 
+                                          JOIN pasien pa ON p.id_pasien = pa.id_pasien
+                                          WHERE p.status IN ('Menunggu', 'Diperiksa') 
                                           ORDER BY p.id_pendaftaran DESC LIMIT 5");
 
 $recentPemeriksaan = mysqli_query($conn, "SELECT pm.id_pemeriksaan, pa.nama_pasien, d.nama_dokter, pm.waktu_periksa 
