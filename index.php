@@ -82,9 +82,6 @@ $recentPemeriksaan = mysqli_query($conn, "SELECT pm.id_pemeriksaan, p.status, pa
                 ?>
             </tbody>
         </table>
-        <div style="margin-top: 1rem; text-align: center;">
-            <a href="pendaftaran/pendaftaran_tampil.php" class="btn btn-primary">Lihat Semua</a>
-        </div>
     </div>
 
     <!-- Recent Pemeriksaan -->
@@ -117,24 +114,5 @@ $recentPemeriksaan = mysqli_query($conn, "SELECT pm.id_pemeriksaan, p.status, pa
                 ?>
             </tbody>
         </table>
-        <div style="margin-top: 1rem; text-align: center;">
-            <a href="pemeriksaan/pemeriksaan_tampil.php" class="btn btn-primary">Lihat Semua</a>
-        </div>
     </div>
 </div>
-
-<!-- Quick Actions -->
-<div class="card" style="margin-top: 2rem;">
-    <div class="card-header">⚡ Aksi Cepat</div>
-    <div class="card-body">
-        <div class="btn-group" style="gap: 1rem;">
-            <a href="pasien/pasien_tambah.php" class="btn btn-primary">+ Tambah Pasien</a>
-            <a href="pendaftaran/pendaftaran_tambah.php" class="btn btn-primary">+ Daftar Pasien</a>
-            <a href="pemeriksaan/pemeriksaan_tambah.php" class="btn btn-info">+ Tambah Pemeriksaan</a>
-            <a href="dokter/dokter_tampil.php" class="btn btn-secondary">Kelola Dokter</a>
-            <a href="admin/admin_tampil.php" class="btn btn-secondary">Kelola Admin</a>
-        </div>
-    </div>
-</div>
-
-<?php include 'templates/footer.php'; ?>

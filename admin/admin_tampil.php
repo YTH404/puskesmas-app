@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('superadmin');
 
 $page_title = "Data Admin - Puskesmas Management System";
 $base_path = '../';
@@ -51,5 +53,3 @@ $result = mysqli_query($conn, $sql);
         </tbody>
     </table>
 </div>
-
-<?php include '../templates/footer.php'; ?>

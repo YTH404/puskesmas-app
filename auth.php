@@ -20,16 +20,10 @@ function redirectByRole() {
             header("Location: " . $base_path . "admin/admin_tampil.php");
             exit;
         case 'admin':
-            header("Location: " . $base_path . "dokter/dokter_tampil.php");
-            exit;
         case 'pendaftaran':
-            header("Location: " . $base_path . "pendaftaran/pendaftaran_tampil.php");
-            exit;
         case 'pemeriksaan':
-            header("Location: " . $base_path . "pendaftaran/pendaftaran_tampil.php");
-            exit;
         case 'apoteker':
-            header("Location: " . $base_path . "pemeriksaan/pemeriksaan_tampil.php");
+            header("Location: " . $base_path . "index.php");
             exit;
         default:
             header("Location: " . $base_path . "login.php");
@@ -58,4 +52,24 @@ function checkRole($allowed_role) {
             redirectByRole();
         }
     }
+}
+
+/**
+ * Check whether the current user's level is within allowed roles.
+ * Accepts a string (single role) or an array of roles.
+ * Returns true when the user is logged in and has one of the allowed roles.
+ */
+function canView($allowed_roles) {
+    // Ensure session is started
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    $userLevel = isset($_SESSION['level']) ? $_SESSION['level'] : null;
+
+    if (is_array($allowed_roles)) {
+        return $userLevel !== null && in_array($userLevel, $allowed_roles, true);
+    }
+
+    return $userLevel !== null && $userLevel === $allowed_roles;
 }

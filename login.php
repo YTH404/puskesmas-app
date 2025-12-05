@@ -18,6 +18,7 @@ if (isset($_POST['login'])) {
     if ($data) {
         $_SESSION['login'] = true;
         $_SESSION['level'] = $data['level'];
+        $_SESSION['nama_admin'] = $data['nama_admin'];
         $success = 'Login berhasil! Mengalihkan...';
         echo "<script>
                 setTimeout(function() {

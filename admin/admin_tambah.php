@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('superadmin');
 
 $page_title = "Tambah Data Admin - Puskesmas Management System";
 $base_path = '../';
@@ -58,6 +60,7 @@ if (isset($_POST['submit'])) {
             <label for="level">Bagian</label>
             <select id="level" name="level" required>
                 <option value="">-- Pilih Bagian --</option>
+                <option value="admin">Admin</option>
                 <option value="pendaftaran">Pendaftaran</option>
                 <option value="pemeriksaan">Pemeriksaan</option>
                 <option value="apoteker">Apoteker</option>
@@ -70,5 +73,3 @@ if (isset($_POST['submit'])) {
         </div>
     </form>
 </div>
-
-<?php include '../templates/footer.php'; ?>

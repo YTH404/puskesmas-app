@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('pemeriksaan');
 
 $page_title = "Tambah Data Pemeriksaan - Puskesmas Management System";
 $base_path = '../';
@@ -85,4 +87,3 @@ if (isset($_POST['submit'])) {
     </form>
 </div>
 
-<?php include '../templates/footer.php'; ?>

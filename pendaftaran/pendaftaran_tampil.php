@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole(["pendaftaran", "pemeriksaan"]);
 
 $page_title = "Data Pendaftaran - Puskesmas Management System";
 $base_path = '../';
@@ -41,10 +43,23 @@ $result = mysqli_query($conn, $sql);
                     echo "<td>" . htmlspecialchars($row['keluhan']) . "</td>";
                     echo "<td $status_class><strong>" . htmlspecialchars($row['status']) . "</strong></td>";
                     echo "<td class='action-links'>";
-                    echo "<a href='pendaftaran_edit.php?id_pendaftaran=" . $row['id_pendaftaran'] . "' class='edit'>Edit</a>";
+                    $hasAction = false;
+                    if (canView(['pendaftaran'])){
+                        echo "<a href='pendaftaran_edit.php?id_pendaftaran=" . $row['id_pendaftaran'] . "' class='edit'>Edit</a>";
+                        $hasAction = true;
+                    }
                     if ($row['status'] == 'Menunggu') {
+                        if (canView(['pendaftaran'])){
                         echo " <a href='pendaftaran_hapus.php?id_pendaftaran=" . $row['id_pendaftaran'] . "' class='delete' onclick=\"return confirmDelete('Yakin ingin menghapus data ini?')\">Hapus</a>";
-                        echo " <a href='../pemeriksaan/pemeriksaan_tambah.php?id_pendaftaran=" . $row['id_pendaftaran'] . "' class='view'>Periksa</a>";
+                        $hasAction = true;
+                        }
+                        if (canView(['pemeriksaan'])){
+                        echo " <a href='../pemeriksaan/pemeriksaan_tambah.php?id_pendaftaran=" . $row['id_pendaftaran'] . "' class='view'>Periksa</a>";    
+                        $hasAction = true;
+                        }
+                    }
+                    if ($hasAction == false) {
+                        echo " - ";
                     }
                     echo "</td>";
                     echo "</tr>";
@@ -56,5 +71,3 @@ $result = mysqli_query($conn, $sql);
         </tbody>
     </table>
 </div>
-
-<?php include '../templates/footer.php'; ?>

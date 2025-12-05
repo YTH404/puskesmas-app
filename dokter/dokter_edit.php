@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('admin');
 
 $page_title = "Edit Data Dokter - Puskesmas Management System";
 $base_path = '../';
@@ -87,4 +89,3 @@ $data = mysqli_fetch_assoc($result);
     </form>
 </div>
 
-<?php include '../templates/footer.php'; ?>

@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('apoteker');
 
 $page_title = "Pemeriksaan Selesai - Puskesmas Management System";
 $base_path = '../';
@@ -88,5 +90,3 @@ $data = mysqli_fetch_assoc($result);
         </div>
     </form>
 </div>
-
-<?php include '../templates/footer.php'; ?>

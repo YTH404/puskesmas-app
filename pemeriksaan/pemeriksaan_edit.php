@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('pemeriksaan');
 
 $page_title = "Edit Data Pemeriksaan - Puskesmas Management System";
 $base_path = '../';
@@ -81,4 +83,3 @@ $data = mysqli_fetch_assoc($result);
     </form>
 </div>
 
-<?php include '../templates/footer.php'; ?>

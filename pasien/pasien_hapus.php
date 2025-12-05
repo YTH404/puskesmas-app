@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('pendaftaran');
 
 // Ambil id dari URL
 $id = $_GET['id_pasien'];

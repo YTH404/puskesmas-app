@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole(["pemeriksaan", "apoteker"]);
 
 $page_title = "Data Pemeriksaan - Puskesmas Management System";
 $base_path = '../';
@@ -40,10 +42,14 @@ $result = mysqli_query($conn, $sql);
                     echo "<td>" . $dokter_nama . "</td>";
                     echo "<td>" . htmlspecialchars($row['waktu_periksa']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['keluhan']) . "</td>";
-                    echo "<td class='action-links'>
-                            <a href='pemeriksaan_edit.php?id_pemeriksaan=" . $row['id_pemeriksaan'] . "' class='edit'>Edit</a>
-                            <a href='pemeriksaan_selesai.php?id_pemeriksaan=" . $row['id_pemeriksaan'] . "' class='view'>Selesai</a>
-                          </td>";
+                    echo "<td class='action-links'>";
+                            if (canView(['pemeriksaan'])){
+                            echo "<a href='pemeriksaan_edit.php?id_pemeriksaan=" . $row['id_pemeriksaan'] . "' class='edit'>Edit</a>";
+                            }
+                            if (canView(['apoteker'])){
+                            echo "<a href='pemeriksaan_selesai.php?id_pemeriksaan=" . $row['id_pemeriksaan'] . "' class='view'>Selesai</a>";
+                            }
+                           "</td>";
                     echo "</tr>";
                 }
             } else {
@@ -53,5 +59,3 @@ $result = mysqli_query($conn, $sql);
         </tbody>
     </table>
 </div>
-
-<?php include '../templates/footer.php'; ?>

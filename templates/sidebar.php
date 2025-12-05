@@ -10,6 +10,13 @@ $base_path = str_repeat('../', max(0, $depth - 1));
 if ($depth <= 1) {
     $base_path = '';
 }
+
+// Use canView() from auth.php for role-based visibility. Include auth.php if helper isn't available.
+if (!function_exists('canView')) {
+    // auth.php handles session start and provides canView()/checkRole()
+    require_once __DIR__ . '/../auth.php';
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -33,55 +40,78 @@ if ($depth <= 1) {
         
         <nav class="sidebar-nav">
             <ul class="navbar">
-                <li class="sidebar-header">Menu Utama</li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'index.php') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>index.php" data-nav="dashboard">
-                        <i class="icon">📊</i>
-                        <span class="sidebar-text">Dashboard</span>
-                    </a>
-                </li>
+                <?php if (canView(['pendaftaran', 'pemeriksaan', 'apoteker', 'admin'])): ?>
+                    <li class="sidebar-header">Menu Utama</li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'index.php') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>index.php" data-nav="dashboard">
+                            <i class="icon">📊</i>
+                            <span class="sidebar-text">Dashboard</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 
-                <li class="sidebar-header">Data Master</li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pasien') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pasien/pasien_tampil.php" data-nav="pasien">
-                        <i class="icon">👥</i>
-                        <span class="sidebar-text">Data Pasien</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dokter') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>dokter/dokter_tampil.php" data-nav="dokter">
-                        <i class="icon">👨‍⚕️</i>
-                        <span class="sidebar-text">Data Dokter</span>
-                    </a>
-                </li>
+                <?php if (canView(['pendaftaran', 'dokter'])): ?>
+                    <li class="sidebar-header">Data Master</li>
+                <?php endif; ?>
+
+                <?php if (canView(['pendaftaran'])): ?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pasien') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pasien/pasien_tampil.php" data-nav="pasien">
+                            <i class="icon">👥</i>
+                            <span class="sidebar-text">Data Pasien</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if (canView(['admin'])): ?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'dokter') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>dokter/dokter_tampil.php" data-nav="dokter">
+                            <i class="icon">👨‍⚕️</i>
+                            <span class="sidebar-text">Data Dokter</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 
-                <li class="sidebar-header">Layanan</li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pendaftaran') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pendaftaran/pendaftaran_tampil.php" data-nav="pendaftaran">
-                        <i class="icon">📋</i>
-                        <span class="sidebar-text">Pendaftaran</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pemeriksaan') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pemeriksaan/pemeriksaan_tampil.php" data-nav="pemeriksaan">
-                        <i class="icon">🩺</i>
-                        <span class="sidebar-text">Pemeriksaan</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'histori') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>histori/histori_tampil.php" data-nav="histori">
-                        <i class="icon">📜</i>
-                        <span class="sidebar-text">Histori Pemeriksaan</span>
-                    </a>
-                </li>
+                <?php if (canView(['pendaftaran', 'pemeriksaan', 'apoteker'])): ?>
+                    <li class="sidebar-header">Layanan</li>
+                <?php endif; ?>
+
+                <?php if (canView(['pendaftaran', 'pemeriksaan'])): ?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pendaftaran') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pendaftaran/pendaftaran_tampil.php" data-nav="pendaftaran">
+                            <i class="icon">📋</i>
+                            <span class="sidebar-text">Pendaftaran</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if (canView(['pemeriksaan', 'apoteker'])): ?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'pemeriksaan') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>pemeriksaan/pemeriksaan_tampil.php" data-nav="pemeriksaan">
+                            <i class="icon">🩺</i>
+                            <span class="sidebar-text">Pemeriksaan</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <?php if (canView(['pendaftaran', 'pemeriksaan', 'apoterker', 'admin'])): ?>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'histori') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>histori/histori_tampil.php" data-nav="histori">
+                            <i class="icon">📜</i>
+                            <span class="sidebar-text">Histori Pemeriksaan</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 
-                <li class="sidebar-header">Sistem</li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'admin') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>admin/admin_tampil.php" data-nav="admin">
-                        <i class="icon">⚙️</i>
-                        <span class="sidebar-text">Kelola Admin</span>
-                    </a>
-                </li>
+                <?php if (canView(['superadmin'])): ?>
+                    <li class="sidebar-header">Sistem</li>
+                    <li class="sidebar-item">
+                        <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'admin') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>admin/admin_tampil.php" data-nav="admin">
+                            <i class="icon">⚙️</i>
+                            <span class="sidebar-text">Kelola Admin</span>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 
                 <li class="sidebar-header">Akun</li>
                 <li class="sidebar-item">
@@ -101,18 +131,4 @@ if ($depth <= 1) {
 
     <!-- Main Content -->
     <div class="main-wrapper">
-        <!-- Top Navbar -->
-        <nav class="topbar">
-            <div class="topbar-content">
-                <div class="topbar-left">
-                    <button class="menu-toggle" id="menuToggle">☰</button>
-                    <h1 class="page-title-bar"><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Puskesmas Management System'; ?></h1>
-                </div>
-                <div class="topbar-right">
-                    <span class="user-info">👤 Admin</span>
-                </div>
-            </div>
-        </nav>
         
-        <!-- Page Content -->
-        <div class="container">

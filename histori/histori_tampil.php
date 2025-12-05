@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole(["pendaftaran", "pemeriksaan", "apoteker", "admin"]);
 
 $page_title = "Histori Pemeriksaan - Puskesmas Management System";
 $base_path = '../';
@@ -57,5 +59,3 @@ if (!$result) {
         </tbody>
     </table>
 </div>
-
-<?php include '../templates/footer.php'; ?>

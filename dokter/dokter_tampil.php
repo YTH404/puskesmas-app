@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('admin');
 
 $page_title = "Data Dokter - Puskesmas Management System";
 $base_path = '../';
@@ -54,5 +56,3 @@ $result = mysqli_query($conn, $sql);
         </tbody>
     </table>
 </div>
-
-<?php include '../templates/footer.php'; ?>

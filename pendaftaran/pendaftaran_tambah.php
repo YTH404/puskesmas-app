@@ -1,5 +1,7 @@
 <?php
 include '../config/koneksi.php';
+include '../auth.php';
+checkRole('pendaftaran');
 
 $page_title = "Tambah Data Pendaftaran - Puskesmas Management System";
 $base_path = '../';
@@ -59,5 +61,3 @@ if (isset($_POST['submit'])) {
         </div>
     </form>
 </div>
-
-<?php include '../templates/footer.php'; ?>
