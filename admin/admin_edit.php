@@ -24,10 +24,8 @@ if (isset($_POST['submit'])) {
             WHERE id_admin=$id";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Data berhasil diperbarui!');
-                window.location='admin_tampil.php';
-              </script>";
+        setFlash('Data admin berhasil diperbarui!', 'success');
+        header('Location: admin_tampil.php');
         exit;
     } else {
         echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";

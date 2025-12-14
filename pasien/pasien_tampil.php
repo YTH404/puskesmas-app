@@ -43,10 +43,15 @@ $result = mysqli_query($conn, $sql);
                     echo "<td>" . htmlspecialchars($row['jenis_kelamin']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['golongan_darah']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['tgl_lahir']) . "</td>";
-                    echo "<td class='action-links'>
-                            <a href='pasien_edit.php?id_pasien=" . $row['id_pasien'] . "' class='edit'>Edit</a>
-                            <a href='pasien_hapus.php?id_pasien=" . $row['id_pasien'] . "' class='delete' onclick=\"return confirmDelete('Yakin ingin menghapus data ini?')\">Hapus</a>
-                          </td>";
+                    echo "<td class='action-links'>";
+                            echo "<a href='pasien_edit.php?id_pasien=" . $row['id_pasien'] . "' class='edit'>Edit</a>";
+                            $check_pemeriksaan = mysqli_query($conn, "SELECT id_pasien FROM pendaftaran WHERE id_pasien = '" . $row['id_pasien'] . "' LIMIT 1");
+                            if (mysqli_num_rows($check_pemeriksaan) == 0) {
+                                echo "<a href='pasien_hapus.php?id_pasien=" . $row['id_pasien'] . "' class='delete'>Hapus</a>";
+                            } else {
+                                echo "<span class='delete disabled' title='Pasien ini memiliki data pemeriksaan dan tidak dapat dihapus' style='display: inline-block; min-width: 63px;'>Hapus</span>";
+                        }
+                        "</td>";
                     echo "</tr>";
                 }
             } else {

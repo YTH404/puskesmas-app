@@ -18,10 +18,8 @@ if (isset($_POST['submit'])) {
             VALUES ('$id_pasien', '$keluhan', 'Menunggu')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Data berhasil disimpan!');
-                window.location='pendaftaran_tampil.php';
-              </script>";
+        setFlash('Data pendaftaran berhasil disimpan!', 'success');
+        header('Location: pendaftaran_tampil.php');
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);

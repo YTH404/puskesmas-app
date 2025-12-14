@@ -18,10 +18,8 @@ if (isset($_POST['submit'])) {
             WHERE id_pemeriksaan=$id";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Data berhasil diperbarui!');
-                window.location='pemeriksaan_tampil.php';
-              </script>";
+        setFlash('Data pemeriksaan berhasil diperbarui!', 'success');
+        header('Location: pemeriksaan_tampil.php');
         exit;
     } else {
         echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
@@ -48,12 +46,12 @@ $data = mysqli_fetch_assoc($result);
         
         <div class="form-group">
             <label for="nama_pasien">Nama Pasien</label>
-            <input type="text" id="nama_pasien" value="<?php echo htmlspecialchars($data['nama_pasien']); ?>" readonly>
+            <input type="text" id="nama_pasien" value="<?php echo htmlspecialchars($data['nama_pasien']); ?>" readonly class="form-control" style="background-color: #f0f0f0; cursor: not-allowed;">
         </div>
         
         <div class="form-group">
             <label for="keluhan">Keluhan</label>
-            <input type="text" id="keluhan" value="<?php echo htmlspecialchars($data['keluhan']); ?>" readonly>
+            <input type="text" id="keluhan" value="<?php echo htmlspecialchars($data['keluhan']); ?>" readonly class="form-control" style="background-color: #f0f0f0; cursor: not-allowed;">
         </div>
         
         <div class="form-group">

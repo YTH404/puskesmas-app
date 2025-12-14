@@ -19,10 +19,8 @@ if (isset($_POST['submit'])) {
             VALUES ('$nama', '$spesialis', '$no_hp', '$start_time', '$end_time', '$alamat')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Data berhasil disimpan!');
-                window.location='dokter_tampil.php';
-              </script>";
+        setFlash('Data dokter berhasil disimpan!', 'success');
+        header('Location: dokter_tampil.php');
         exit;
     } else {
         echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";

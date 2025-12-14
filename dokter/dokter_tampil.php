@@ -43,10 +43,15 @@ $result = mysqli_query($conn, $sql);
                     echo "<td>" . htmlspecialchars($row['no_hp_dokter']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['start_time_dokter']) . " - " . htmlspecialchars($row['end_time_dokter']) . "</td>";
                     echo "<td>" . htmlspecialchars($row['alamat_dokter']) . "</td>";
-                    echo "<td class='action-links'>
-                            <a href='dokter_edit.php?id_dokter=" . $row['id_dokter'] . "' class='edit'>Edit</a>
-                            <a href='dokter_hapus.php?id_dokter=" . $row['id_dokter'] . "' class='delete' onclick=\"return confirmDelete('Yakin ingin menghapus data ini?')\">Hapus</a>
-                        </td>";
+                    echo "<td class='action-links'>";
+                            echo "<a href='dokter_edit.php?id_dokter=" . $row['id_dokter'] . "' class='edit'>Edit</a>";
+                            $check_pemeriksaan = mysqli_query($conn, "SELECT id_dokter FROM pemeriksaan WHERE id_dokter = '" . $row['id_dokter'] . "' LIMIT 1");
+                            if (mysqli_num_rows($check_pemeriksaan) == 0) {
+                                echo "<a href='dokter_hapus.php?id_dokter=" . $row['id_dokter'] . "' class='delete'>Hapus</a>";
+                            } else {
+                                echo "<span class='delete disabled' title='Dokter ini memiliki data pemeriksaan dan tidak dapat dihapus'>Hapus</span>";
+                            }
+                        echo "</td>";
                     echo "</tr>";
                 }
             } else {

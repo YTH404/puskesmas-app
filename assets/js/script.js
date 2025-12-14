@@ -1,3 +1,146 @@
+// ===== FEEDBACK UTILITIES =====
+const toastStyles = {
+    success: { bar: 'bg-emerald-500', text: 'text-emerald-700', icon: '✔️' },
+    info: { bar: 'bg-sky-500', text: 'text-sky-700', icon: 'ℹ️' },
+    warning: { bar: 'bg-amber-500', text: 'text-amber-700', icon: '⚠️' },
+    danger: { bar: 'bg-red-500', text: 'text-red-700', icon: '⚠️' },
+};
+
+function ensureToastContainer() {
+    let container = document.getElementById('appToastContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'appToastContainer';
+        container.className = 'fixed top-5 right-5 z-[2100] flex flex-col gap-3 items-end';
+        document.body.appendChild(container);
+    }
+    return container;
+}
+
+function showToast(message, type = 'success', duration = 3500) {
+    const container = ensureToastContainer();
+    const style = toastStyles[type] || toastStyles.info;
+    const toast = document.createElement('div');
+
+    toast.className = 'pointer-events-auto w-80 overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-black/5 transition duration-200 ease-out opacity-0 translate-y-2';
+    toast.innerHTML = `
+        <div class="flex">
+            <div class="${style.bar} w-1"></div>
+            <div class="flex-1 p-4 flex gap-3">
+                <div class="mt-0.5 text-lg">${style.icon}</div>
+                <div class="space-y-1">
+                    <p class="font-semibold text-slate-900">Notifikasi</p>
+                    <p class="text-sm ${style.text} leading-relaxed">${message}</p>
+                </div>
+            </div>
+            <button class="px-3 text-slate-400 hover:text-slate-600" aria-label="Tutup">×</button>
+        </div>
+    `;
+
+    const closeToast = () => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 180);
+    };
+
+    toast.querySelector('button')?.addEventListener('click', closeToast, { once: true });
+
+    container.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.remove('opacity-0', 'translate-y-2'));
+
+    if (duration > 0) {
+        setTimeout(closeToast, duration);
+    }
+}
+
+const confirmVariants = {
+    primary: { icon: 'ℹ️', accent: 'bg-sky-100 text-sky-700', button: 'bg-sky-600 hover:bg-sky-700 focus:ring-sky-500' },
+    info: { icon: 'ℹ️', accent: 'bg-indigo-100 text-indigo-700', button: 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500' },
+    danger: { icon: '⚠️', accent: 'bg-red-100 text-red-700', button: 'bg-red-600 hover:bg-red-700 focus:ring-red-500' },
+};
+
+function ensureConfirmModal() {
+    let modal = document.getElementById('appConfirmModal');
+    if (!modal) {
+        const template = `
+            <div id="appConfirmModal" class="fixed inset-0 z-[2000] hidden items-center justify-center px-4">
+                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" data-confirm-overlay></div>
+                <div class="relative w-full max-w-md rounded-2xl bg-white shadow-2xl ring-1 ring-black/5 p-6 space-y-4">
+                    <div class="flex items-start gap-3">
+                        <div id="appConfirmIcon" class="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-700 text-xl">⚠️</div>
+                        <div class="space-y-1">
+                            <h3 id="appConfirmTitle" class="text-lg font-semibold text-slate-900">Konfirmasi</h3>
+                            <p id="appConfirmMessage" class="text-sm text-slate-600 leading-relaxed"></p>
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-3 pt-2">
+                        <button type="button" data-confirm-cancel class="rounded-lg border border-slate-200 px-4 py-2 text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200">Batal</button>
+                        <button type="button" data-confirm-accept class="rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-offset-1">Ya</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.insertAdjacentHTML('beforeend', template);
+        modal = document.getElementById('appConfirmModal');
+    }
+    return modal;
+}
+
+function showConfirmModal({ title = 'Konfirmasi', message = 'Lanjutkan aksi ini?', confirmLabel = 'Ya', cancelLabel = 'Batal', variant = 'primary' } = {}) {
+    const modal = ensureConfirmModal();
+    const acceptBtn = modal.querySelector('[data-confirm-accept]');
+    const cancelBtn = modal.querySelector('[data-confirm-cancel]');
+    const overlay = modal.querySelector('[data-confirm-overlay]');
+    const style = confirmVariants[variant] || confirmVariants.primary;
+
+    modal.querySelector('#appConfirmTitle').textContent = title;
+    modal.querySelector('#appConfirmMessage').textContent = message;
+    modal.querySelector('#appConfirmIcon').className = `flex h-12 w-12 items-center justify-center rounded-full ${style.accent} text-xl`;
+    modal.querySelector('#appConfirmIcon').textContent = style.icon;
+    acceptBtn.textContent = confirmLabel;
+    cancelBtn.textContent = cancelLabel;
+    acceptBtn.className = `rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-offset-1 ${style.button}`;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    return new Promise((resolve) => {
+        const cleanup = (result) => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            resolve(result);
+        };
+
+        const handleAccept = () => cleanup(true);
+        const handleCancel = () => cleanup(false);
+
+        acceptBtn.addEventListener('click', handleAccept, { once: true });
+        cancelBtn.addEventListener('click', handleCancel, { once: true });
+        overlay?.addEventListener('click', handleCancel, { once: true });
+    });
+}
+
+function handleConfirmEvent(evt, options) {
+    if (!evt) {
+        return confirm(options.message);
+    }
+
+    evt.preventDefault();
+    const target = evt.target?.closest('a, button, form');
+    const href = target?.getAttribute('href');
+    const form = target?.closest('form');
+
+    showConfirmModal(options).then((confirmed) => {
+        if (!confirmed) return;
+        if (href) {
+            window.location.href = href;
+        } else if (form) {
+            form.submit();
+        }
+    });
+
+    return false;
+}
+
 // ===== SIDEBAR TOGGLE =====
 function initializeSidebar() {
     const menuToggle = document.getElementById('menuToggle');
@@ -65,12 +208,77 @@ function initializeSidebar() {
     });
 }
 
-// Initialize sidebar immediately
+// Wire logout form with confirmation
+function initializeLogoutConfirm() {
+    const logoutBtn = document.getElementById('logout');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(evt) {
+            evt.preventDefault();
+            showConfirmModal({
+                title: 'Konfirmasi Logout',
+                message: 'Apakah Anda yakin ingin keluar?',
+                variant: 'danger',
+                confirmLabel: 'Ya, Keluar',
+                cancelLabel: 'Batal'
+            }).then((confirmed) => {
+                if (confirmed) {
+                    this.closest('form').submit();
+                }
+            });
+        });
+    }
+}
+
+// Show flash message if present
+function initializeFlashMessages() {
+    if (window.appFlash && window.appFlash.message) {
+        showToast(window.appFlash.message, window.appFlash.type, 4000);
+    }
+}
+
+// Initialize all on page load
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeSidebar);
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeSidebar();
+        initializeLogoutConfirm();
+        initializeFlashMessages();
+    });
 } else {
     initializeSidebar();
+    initializeLogoutConfirm();
+    initializeFlashMessages();
 }
+
+// ===== CONFIRMATION DIALOG =====
+function confirmDelete(message = 'Yakin ingin menghapus data ini?') {
+    return false; // Prevent default, we'll handle via event
+}
+
+function confirmAction(message = 'Lanjutkan aksi ini?') {
+    return false; // Prevent default, we'll handle via event
+}
+
+// Wire delete links with modern confirmation
+document.addEventListener('DOMContentLoaded', function() {
+    document.body.addEventListener('click', function(evt) {
+        const deleteLink = evt.target.closest('a.delete');
+        if (deleteLink) {
+            evt.preventDefault();
+            const message = deleteLink.getAttribute('data-confirm') || 'Yakin ingin menghapus data ini?';
+            showConfirmModal({
+                title: 'Konfirmasi Hapus',
+                message: message,
+                variant: 'danger',
+                confirmLabel: 'Ya, Hapus',
+                cancelLabel: 'Batal'
+            }).then((confirmed) => {
+                if (confirmed) {
+                    window.location.href = deleteLink.href;
+                }
+            });
+        }
+    });
+});
 
 // ===== FORM VALIDATION =====
 function validateForm(formId) {
@@ -90,15 +298,6 @@ function validateForm(formId) {
     });
 
     return isValid;
-}
-
-// ===== CONFIRMATION DIALOG =====
-function confirmDelete(message = 'Yakin ingin menghapus data ini?') {
-    return confirm(message);
-}
-
-function confirmAction(message = 'Lanjutkan aksi ini?') {
-    return confirm(message);
 }
 
 // ===== TABLE FILTERING =====
@@ -245,9 +444,9 @@ const scrollToTopBtn = document.getElementById('scrollToTopBtn');
 
 window.addEventListener('scroll', () => {
     if (window.pageYOffset > 300) {
-        scrollToTopBtn?.style.display = 'block';
+        if (scrollToTopBtn) scrollToTopBtn.style.display = 'block';
     } else {
-        scrollToTopBtn?.style.display = 'none';
+        if (scrollToTopBtn) scrollToTopBtn.style.display = 'none';
     }
 });
 
@@ -258,7 +457,9 @@ function scrollToTop() {
     });
 }
 
-scrollToTopBtn?.addEventListener('click', scrollToTop);
+if (scrollToTopBtn) {
+    scrollToTopBtn.addEventListener('click', scrollToTop);
+}
 
 // ===== FORM AUTO-SAVE DRAFT =====
 function enableAutoSaveDraft(formId, storageKey) {

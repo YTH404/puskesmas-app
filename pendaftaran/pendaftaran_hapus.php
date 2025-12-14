@@ -10,10 +10,9 @@ $id = $_GET['id_pendaftaran'];
 $sql = "DELETE FROM pendaftaran WHERE id_pendaftaran = $id";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<script>
-            alert('Data berhasil dihapus!');
-            window.location='pendaftaran_tampil.php';
-          </script>";
+    setFlash('Data pendaftaran berhasil dihapus!', 'success');
+    header('Location: pendaftaran_tampil.php');
+    exit;
 } else {
     echo "Error: " . mysqli_error($conn);
 }

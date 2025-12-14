@@ -50,7 +50,7 @@ $result = mysqli_query($conn, $sql);
                     }
                     if ($row['status'] == 'Menunggu') {
                         if (canView(['pendaftaran'])){
-                        echo " <a href='pendaftaran_hapus.php?id_pendaftaran=" . $row['id_pendaftaran'] . "' class='delete' onclick=\"return confirmDelete('Yakin ingin menghapus data ini?')\">Hapus</a>";
+                        echo " <a href='pendaftaran_hapus.php?id_pendaftaran=" . $row['id_pendaftaran'] . "' class='delete'>Hapus</a>";
                         $hasAction = true;
                         }
                         if (canView(['pemeriksaan'])){

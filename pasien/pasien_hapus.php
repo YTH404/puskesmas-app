@@ -10,10 +10,9 @@ $id = $_GET['id_pasien'];
 $sql = "DELETE FROM pasien WHERE id_pasien = $id";
 
 if (mysqli_query($conn, $sql)) {
-    echo "<script>
-            alert('Data berhasil dihapus!');
-            window.location='pasien_tampil.php';
-          </script>";
+    setFlash('Data pasien berhasil dihapus!', 'success');
+    header('Location: pasien_tampil.php');
+    exit;
 } else {
     echo "Error: " . mysqli_error($conn);
 }

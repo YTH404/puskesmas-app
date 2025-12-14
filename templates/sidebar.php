@@ -26,8 +26,19 @@ if (!function_exists('canView')) {
     <title><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Puskesmas App'; ?></title>
     <?php $css_path = __DIR__ . '/../assets/css/style.css'; ?>
     <link rel="stylesheet" href="<?php echo $base_path; ?>assets/css/style.css?v=<?php echo file_exists($css_path) ? filemtime($css_path) : time(); ?>">
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
+    <?php $flash = function_exists('consumeFlash') ? consumeFlash() : null; ?>
+    <?php $js_path = __DIR__ . '/../assets/js/script.js'; ?>
+    <script>
+        window.appFlash = <?php echo json_encode($flash); ?>;
+    </script>
+    <script src="<?php echo $base_path; ?>assets/js/script.js?v=<?php echo file_exists($js_path) ? filemtime($js_path) : time(); ?>" defer></script>
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">

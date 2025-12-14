@@ -24,10 +24,8 @@ if (isset($_POST['submit'])) {
 
     if (mysqli_query($conn, $sql1)) {
         mysqli_query($conn, $sql2); // Update status pendaftaran
-        echo "<script>
-                alert('Data berhasil diperbarui!');
-                window.location='pemeriksaan_tampil.php';
-              </script>";
+        setFlash('Pemeriksaan berhasil diselesaikan!', 'success');
+        header('Location: pemeriksaan_tampil.php');
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);

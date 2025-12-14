@@ -7,7 +7,7 @@
                     <h1 class="page-title-bar"><?php echo isset($page_title) ? htmlspecialchars($page_title) : 'Puskesmas Management System'; ?></h1>
                 </div>
                 <div class="topbar-right">
-                    <span class="user-info">👤 <?php echo isset($_SESSION['nama_admin'])?> </span>
+                    <span class="user-info">👤 <?php echo isset($_SESSION['nama_admin']) ? htmlspecialchars($_SESSION['nama_admin']) : ''; ?> </span>
                 </div>
             </div>
         </nav>

@@ -73,3 +73,22 @@ function canView($allowed_roles) {
 
     return $userLevel !== null && $userLevel === $allowed_roles;
 }
+function setFlash($message, $type = 'success') {
+    $_SESSION['flash_message'] = $message;
+    $_SESSION['flash_type'] = $type;
+}
+
+function consumeFlash() {
+    if (!isset($_SESSION['flash_message'])) {
+        return null;
+    }
+
+    $flash = [
+        'message' => $_SESSION['flash_message'],
+        'type' => $_SESSION['flash_type'] ?? 'info',
+    ];
+
+    unset($_SESSION['flash_message'], $_SESSION['flash_type']);
+
+    return $flash;
+}

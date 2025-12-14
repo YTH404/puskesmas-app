@@ -24,10 +24,8 @@ if (isset($_POST['submit'])) {
             WHERE id_pasien=$id";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Data berhasil diperbarui!');
-                window.location='pasien_tampil.php';
-              </script>";
+        setFlash('Data pasien berhasil diperbarui!', 'success');
+        header('Location: pasien_tampil.php');
         exit;
     } else {
         echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";

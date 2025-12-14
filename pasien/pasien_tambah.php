@@ -18,10 +18,8 @@ if (isset($_POST['submit'])) {
             VALUES ('$nama', '$nama_ibu', '$jenis_kelamin', '$golongan_darah', '$tgl_lahir')";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Data berhasil disimpan!');
-                window.location='pasien_tampil.php';
-              </script>";
+        setFlash('Data pasien berhasil disimpan!', 'success');
+        header('Location: pasien_tampil.php');
         exit;
     } else {
         echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";

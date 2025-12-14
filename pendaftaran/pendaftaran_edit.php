@@ -16,10 +16,8 @@ if (isset($_POST['submit'])) {
             WHERE id_pendaftaran=$id";
 
     if (mysqli_query($conn, $sql)) {
-        echo "<script>
-                alert('Data berhasil diperbarui!');
-                window.location='pendaftaran_tampil.php';
-              </script>";
+        setFlash('Data pendaftaran berhasil diperbarui!', 'success');
+        header('Location: pendaftaran_tampil.php');
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);

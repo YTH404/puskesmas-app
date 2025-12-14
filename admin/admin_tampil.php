@@ -8,7 +8,7 @@ $base_path = '../';
 
 // Query untuk mengambil data
 $sql = "SELECT * FROM admin
-        WHERE level IN ('pendaftaran', 'pemeriksaan', 'apoteker')";
+        WHERE level IN ('admin', 'pendaftaran', 'pemeriksaan', 'apoteker')";
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -42,7 +42,7 @@ $result = mysqli_query($conn, $sql);
                     echo "<td>" . htmlspecialchars($row['level']) . "</td>";
                     echo "<td class='action-links'>
                             <a href='admin_edit.php?id_admin=" . $row['id_admin'] . "' class='edit'>Edit</a>
-                            <a href='admin_hapus.php?id_admin=" . $row['id_admin'] . "' class='delete' onclick=\"return confirmDelete('Yakin ingin menghapus data ini?')\">Hapus</a>
+                            <a href='admin_hapus.php?id_admin=" . $row['id_admin'] . "' class='delete'>Hapus</a>
                           </td>";
                     echo "</tr>";
                 }
