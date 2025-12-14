@@ -14,8 +14,11 @@ if (isset($_POST['submit'])) {
     $end = $_POST['end_time_admin'];
     $level = $_POST['level'];
 
+    // Hash password with bcrypt
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
     $sql = "INSERT INTO admin (nama_admin, password, start_time_admin, end_time_admin, level)
-            VALUES ('$nama', '$password', '$start', '$end', '$level')";
+            VALUES ('$nama', '$hashed_password', '$start', '$end', '$level')";
 
     if (mysqli_query($conn, $sql)) {
         setFlash('Data admin berhasil disimpan!', 'success');

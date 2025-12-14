@@ -15,13 +15,26 @@ if (isset($_POST['submit'])) {
     $end        = $_POST['end_time_admin'];
     $level      = $_POST['level'];
 
-    $sql = "UPDATE admin SET 
-                nama_admin='$nama', 
-                password='$password',
-                start_time_admin='$start',
-                end_time_admin='$end',
-                level='$level'
-            WHERE id_admin=$id";
+    // Only update password if a new one is provided
+    if (!empty($password)) {
+        // Hash password with bcrypt
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+        $sql = "UPDATE admin SET 
+                    nama_admin='$nama', 
+                    password='$hashed_password',
+                    start_time_admin='$start',
+                    end_time_admin='$end',
+                    level='$level'
+                WHERE id_admin=$id";
+    } else {
+        // Update without changing password
+        $sql = "UPDATE admin SET 
+                    nama_admin='$nama',
+                    start_time_admin='$start',
+                    end_time_admin='$end',
+                    level='$level'
+                WHERE id_admin=$id";
+    }
 
     if (mysqli_query($conn, $sql)) {
         setFlash('Data admin berhasil diperbarui!', 'success');
@@ -52,8 +65,8 @@ $data = mysqli_fetch_assoc($result);
         </div>
         
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" value="<?php echo htmlspecialchars($data['password']); ?>" required>
+            <label for="password">Password Baru (kosongkan jika tidak ingin mengubah)</label>
+            <input type="password" id="password" name="password" placeholder="Masukkan password baru">
         </div>
         
         <div class="form-row">
@@ -71,6 +84,7 @@ $data = mysqli_fetch_assoc($result);
         <div class="form-group">
             <label for="level">Bagian</label>
             <select id="level" name="level" required>
+                <option value="admin" <?php if ($data['level'] == 'admin') echo 'selected'; ?>>Admin</option>
                 <option value="pendaftaran" <?php if ($data['level'] == 'pendaftaran') echo 'selected'; ?>>Pendaftaran</option>
                 <option value="pemeriksaan" <?php if ($data['level'] == 'pemeriksaan') echo 'selected'; ?>>Pemeriksaan</option>
                 <option value="apoteker" <?php if ($data['level'] == 'apoteker') echo 'selected'; ?>>Apoteker</option>

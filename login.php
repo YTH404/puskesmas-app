@@ -1,6 +1,9 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include 'config/koneksi.php';
+include 'auth.php';
 
 $error = '';
 $success = '';
@@ -10,21 +13,19 @@ if (isset($_POST['login'])) {
     $nama_admin = htmlspecialchars($_POST['nama_admin']);
     $password = htmlspecialchars($_POST['password']);
 
-    // Query untuk mencari user
-    $sql = "SELECT * FROM admin WHERE nama_admin='$nama_admin' AND password='$password'";
+    // Query untuk mencari user by username only
+    $sql = "SELECT * FROM admin WHERE nama_admin='$nama_admin'";
     $result = mysqli_query($conn, $sql);
     $data = mysqli_fetch_assoc($result);
 
-    if ($data) {
+    // Verify password using password_verify for hashed passwords
+    if ($data && password_verify($password, $data['password'])) {
         $_SESSION['login'] = true;
         $_SESSION['level'] = $data['level'];
         $_SESSION['nama_admin'] = $data['nama_admin'];
-        $success = 'Login berhasil! Mengalihkan...';
-        echo "<script>
-                setTimeout(function() {
-                    window.location='index.php';
-                }, 1500);
-              </script>";
+        setFlash('Login berhasil! Selamat datang, ' . $data['nama_admin'], 'success');
+        header('Location: index.php');
+        exit;
     } else {
         $error = 'Nama Admin atau Password salah!';
     }
@@ -44,8 +45,17 @@ if (isset($_SESSION['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Puskesmas Management System</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="login-container">
+    <?php $flash = function_exists('consumeFlash') ? consumeFlash() : null; ?>
+    <script>
+        window.appFlash = <?php echo json_encode($flash); ?>;
+    </script>
     <div class="login-box">
         <div class="login-header">
             <div class="login-logo">🏥</div>
@@ -67,7 +77,7 @@ if (isset($_SESSION['login'])) {
 
         <form method="POST" action="" class="login-form">
             <div class="form-group">
-                <label for="nama_admin">nama_admin</label>
+                <label for="nama_admin">Nama Admin</label>
                 <input type="text" id="nama_admin" name="nama_admin" placeholder="Masukkan Nama Admin" required autofocus>
             </div>
 
