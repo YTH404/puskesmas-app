@@ -94,7 +94,7 @@ if (!function_exists('canView')) {
                     </li>
                 <?php endif; ?>
 
-                <?php if (canView(['pendaftaran', 'pemeriksaan', 'apoterker', 'admin'])): ?>
+                <?php if (canView(['pendaftaran', 'pemeriksaan', 'apoteker', 'admin'])): ?>
                     <li class="sidebar-item">
                         <a class="sidebar-link <?php echo (strpos($_SERVER['PHP_SELF'], 'histori') !== false) ? 'active' : ''; ?>" aria-current="page" href="<?php echo $base_path; ?>histori/histori_tampil.php" data-nav="histori">
                             <i class="icon">📜</i>
