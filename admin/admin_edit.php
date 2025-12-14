@@ -15,35 +15,42 @@ if (isset($_POST['submit'])) {
     $end        = $_POST['end_time_admin'];
     $level      = $_POST['level'];
 
-    // Only update password if a new one is provided
-    if (!empty($password)) {
-        // Hash password with bcrypt
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-        $sql = "UPDATE admin SET 
-                    nama_admin='$nama', 
-                    password='$hashed_password',
-                    start_time_admin='$start',
-                    end_time_admin='$end',
-                    level='$level'
-                WHERE id_admin=$id";
+    // Check if admin name already exists (excluding current admin)
+    $check_sql = "SELECT id_admin FROM admin WHERE nama_admin='$nama' AND id_admin != $id";
+    $check_result = mysqli_query($conn, $check_sql);
+    
+    if (mysqli_num_rows($check_result) > 0) {
+        setFlash('Akun dengan nama admin sudah ada', 'danger');
     } else {
-        // Update without changing password
-        $sql = "UPDATE admin SET 
-                    nama_admin='$nama',
-                    start_time_admin='$start',
-                    end_time_admin='$end',
-                    level='$level'
-                WHERE id_admin=$id";
-    }
+        // Only update password if a new one is provided
+        if (!empty($password)) {
+            // Hash password with bcrypt
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+            $sql = "UPDATE admin SET 
+                        nama_admin='$nama', 
+                        password='$hashed_password',
+                        start_time_admin='$start',
+                        end_time_admin='$end',
+                        level='$level'
+                    WHERE id_admin=$id";
+        } else {
+            // Update without changing password
+            $sql = "UPDATE admin SET 
+                        nama_admin='$nama',
+                        start_time_admin='$start',
+                        end_time_admin='$end',
+                        level='$level'
+                    WHERE id_admin=$id";
+        }
 
-    if (mysqli_query($conn, $sql)) {
-        setFlash('Data admin berhasil diperbarui!', 'success');
-        header('Location: admin_tampil.php');
-        exit;
-    } else {
-        echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
-    }
-}
+        if (mysqli_query($conn, $sql)) {
+            setFlash('Data admin berhasil diperbarui!', 'success');
+            header('Location: admin_tampil.php');
+            exit;
+        } else {
+            setFlash('Error: ' . mysqli_error($conn), 'danger');
+        }
+    }}
 
 // Jika belum submit → tampilkan form edit
 $id = $_GET['id_admin'];

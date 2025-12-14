@@ -14,18 +14,26 @@ if (isset($_POST['submit'])) {
     $end = $_POST['end_time_admin'];
     $level = $_POST['level'];
 
-    // Hash password with bcrypt
-    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
-
-    $sql = "INSERT INTO admin (nama_admin, password, start_time_admin, end_time_admin, level)
-            VALUES ('$nama', '$hashed_password', '$start', '$end', '$level')";
-
-    if (mysqli_query($conn, $sql)) {
-        setFlash('Data admin berhasil disimpan!', 'success');
-        header('Location: admin_tampil.php');
-        exit;
+    // Check if admin name already exists
+    $check_sql = "SELECT id_admin FROM admin WHERE nama_admin='$nama'";
+    $check_result = mysqli_query($conn, $check_sql);
+    
+    if (mysqli_num_rows($check_result) > 0) {
+        setFlash('Akun dengan nama admin sudah ada', 'danger');
     } else {
-        echo "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
+        // Hash password with bcrypt
+        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+        $sql = "INSERT INTO admin (nama_admin, password, start_time_admin, end_time_admin, level)
+                VALUES ('$nama', '$hashed_password', '$start', '$end', '$level')";
+
+        if (mysqli_query($conn, $sql)) {
+            setFlash('Data admin berhasil disimpan!', 'success');
+            header('Location: admin_tampil.php');
+            exit;
+        } else {
+            setFlash('Error: ' . mysqli_error($conn), 'danger');
+        }
     }
 }
 ?>
