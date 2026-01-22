@@ -18,7 +18,9 @@ $result = mysqli_query($conn, $sql);
 <?php include '../templates/header.php'; ?>
 
 <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-    <a href="pendaftaran_tambah.php" class="btn btn-success">+ Pendaftaran Baru</a>
+    <?php if (canView(['pendaftaran'])): ?>
+        <a href="pendaftaran_tambah.php" class="btn btn-success">+ Pendaftaran Baru</a>
+    <?php endif; ?>
 </div>
 
 <div class="table-container">
